@@ -1,0 +1,56 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片压缩</title>
+</head>
+
+<body>
+  <div>
+    <input id="img-files" type="file" accept="image/*" multiple />
+    <ul id="img-list-before">
+    </ul>
+    <input type="button" id="compress" value="压缩" />
+    <ul id="img-list-after"></ul>
+  </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="./ImageCompresor.js"></script>
+<script>
+  $("#img-files").on("change", function (e) {
+    var files = e.target.files; // 事件对象
+
+    // 循环显示图片预览
+    var sHtml = "";
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i], reader = new FileReader();
+      reader.readAsDataURL(file); // 读取方式
+      reader.onload = (function (reader) {
+        return function (e) {
+          sHtml = "<li class='img'><img src='" + e.target.result + "'/></li>";
+          $("#img-list-before").append(sHtml);
+        }
+      })(reader);
+    }
+  });
+
+  $('#compress').on('click', function () {
+    var image = new Image();
+    image.src = $(".img").eq(0).find("img").attr("src");
+
+    image.onload = function () {
+      var compresor = new ImageCompresor({
+        width: 500,
+        height: 250,
+        image: image,
+        ratio: 0.2,
+      });
+      var img64 = compresor.compress();
+      $("#img-list-after").append("<li><img src='" + img64 + "' /></li>");
+    }
+  })
+</script>
+
+</html>
