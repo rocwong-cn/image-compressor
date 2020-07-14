@@ -2,9 +2,6 @@
 
 > 基于canvas进行图片压缩；
 
-## 预览
-[预览地址](http://htmlpreview.github.io/?)
-
 ## 关键步骤
 
 - 获取img元素，即为压缩的图片
